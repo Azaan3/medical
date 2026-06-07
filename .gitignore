@@ -7,4 +7,5 @@ uploads
 # Keep committed index for deploy without ingest API key:
 # data/knowledge-index.json is tracked
 *.log
+tsconfig.tsbuildinfo
 .DS_Store

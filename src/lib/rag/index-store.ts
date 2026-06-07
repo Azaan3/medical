@@ -1,29 +1,19 @@
-import { readFileSync, existsSync } from "fs";
-import { join } from "path";
+import bundledIndex from "../../../data/knowledge-index.json";
 import type { KnowledgeIndex } from "./types";
 
-const INDEX_PATH = join(process.cwd(), "data", "knowledge-index.json");
-
-let cached: KnowledgeIndex | null = null;
+const EMPTY_INDEX: KnowledgeIndex = {
+  version: 1,
+  builtAt: new Date(0).toISOString(),
+  hasEmbeddings: false,
+  chunks: [],
+};
 
 export function loadKnowledgeIndex(): KnowledgeIndex {
-  if (cached) return cached;
-
-  if (!existsSync(INDEX_PATH)) {
-    cached = {
-      version: 1,
-      builtAt: new Date(0).toISOString(),
-      hasEmbeddings: false,
-      chunks: [],
-    };
-    return cached;
-  }
-
-  const raw = readFileSync(INDEX_PATH, "utf-8");
-  cached = JSON.parse(raw) as KnowledgeIndex;
-  return cached;
+  const index = bundledIndex as KnowledgeIndex;
+  if (!index?.chunks?.length) return EMPTY_INDEX;
+  return index;
 }
 
 export function getIndexPath(): string {
-  return INDEX_PATH;
+  return "data/knowledge-index.json";
 }
