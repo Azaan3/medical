@@ -1,4 +1,4 @@
-import bundledIndex from "../../../data/knowledge-index.json";
+import bundledIndex from "@/data/knowledge-index.json";
 import type { KnowledgeIndex } from "./types";
 
 const EMPTY_INDEX: KnowledgeIndex = {
@@ -15,5 +15,5 @@ export function loadKnowledgeIndex(): KnowledgeIndex {
 }
 
 export function getIndexPath(): string {
-  return "data/knowledge-index.json";
+  return "src/data/knowledge-index.json";
 }

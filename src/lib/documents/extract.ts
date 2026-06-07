@@ -17,9 +17,9 @@ export async function extractDocumentText(
   }
 
   if (mimeType === "application/pdf" || lower.endsWith(".pdf")) {
-    const pdfParse = (await import("pdf-parse")).default;
-    const result = await pdfParse(buffer);
-    return (result.text ?? "").trim();
+    throw new Error(
+      "PDF upload is disabled in educational mode. Type fictional findings manually.",
+    );
   }
 
   if (mimeType.startsWith("image/")) {

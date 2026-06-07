@@ -12,7 +12,7 @@ async function main() {
   );
   const index = await buildKnowledgeIndex({ withEmbeddings });
   console.log(
-    `Done. ${index.chunks.length} chunks → data/knowledge-index.json`,
+    `Done. ${index.chunks.length} chunks → data/ and src/data/knowledge-index.json`,
   );
 }
 

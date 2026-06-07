@@ -68,7 +68,11 @@ export async function buildKnowledgeIndex(options: {
     chunks,
   };
 
+  const srcDataPath = join(process.cwd(), "src", "data", "knowledge-index.json");
   mkdirSync(join(process.cwd(), "data"), { recursive: true });
-  writeFileSync(INDEX_PATH, JSON.stringify(index));
+  mkdirSync(join(process.cwd(), "src", "data"), { recursive: true });
+  const json = JSON.stringify(index);
+  writeFileSync(INDEX_PATH, json);
+  writeFileSync(srcDataPath, json);
   return index;
 }
