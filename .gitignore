@@ -1,0 +1,10 @@
+node_modules
+.next
+.env
+.env.local
+.env*.local
+uploads
+# Keep committed index for deploy without ingest API key:
+# data/knowledge-index.json is tracked
+*.log
+.DS_Store
