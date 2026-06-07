@@ -7,7 +7,7 @@ import { CaseForm } from "@/components/CaseForm";
 import { DisclaimerBanner } from "@/components/DisclaimerBanner";
 import { KnowledgeStatus } from "@/components/KnowledgeStatus";
 import { TrainingCasePicker } from "@/components/TrainingCasePicker";
-import { TrainingGate } from "@/components/TrainingGate";
+import { SafetyGate } from "@/components/SafetyGate";
 import { createEmptyCase } from "@/lib/case-store";
 import type { ClinicalAssessment, ClinicalCase } from "@/lib/types";
 
@@ -26,7 +26,7 @@ export default function Home() {
   }
 
   return (
-    <TrainingGate>
+    <SafetyGate>
     <div className="min-h-screen flex flex-col">
       <DisclaimerBanner />
 
@@ -83,10 +83,16 @@ export default function Home() {
         </div>
       </main>
 
-      <footer className="border-t border-slate-200 py-4 text-center text-xs text-slate-500">
-        Training only · Health Canada clearance required before any real clinical use.
+      <footer className="border-t border-slate-200 py-4 text-center text-xs text-slate-500 space-y-1">
+        <p>Educational project only · Not medical advice · Not Health Canada approved</p>
+        <p>
+          <a href="/terms" className="underline text-clinical-700">
+            Terms of use
+          </a>
+          {" · "}Ages 13+ with parent/guardian permission for online accounts
+        </p>
       </footer>
     </div>
-    </TrainingGate>
+    </SafetyGate>
   );
 }

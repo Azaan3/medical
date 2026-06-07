@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { APP_MODE } from "@/lib/config";
+import { CONSENT_BLOCK_MESSAGE } from "@/lib/consent";
+import { loadStoredConsent } from "@/lib/consent-client";
 import { PHI_BLOCK_MESSAGE, scanClinicalCaseForPhi } from "@/lib/phi-guard";
 import type { ChatMessage, ClinicalAssessment, ClinicalCase } from "@/lib/types";
 
@@ -68,6 +70,14 @@ export function CaseChat({
       onSymptomsAppend(symptomLike);
     }
 
+    const consent = loadStoredConsent();
+    if (!consent) {
+      setError(CONSENT_BLOCK_MESSAGE);
+      setLoading(false);
+      onLoadingChange?.(false);
+      return;
+    }
+
     try {
       const res = await fetch("/api/assess", {
         method: "POST",
@@ -76,6 +86,7 @@ export function CaseChat({
           clinicalCase,
           messages: [...messages, userMsg],
           newInput: text,
+          consent,
         }),
       });
       const data = (await res.json()) as {

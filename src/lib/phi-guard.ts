@@ -21,12 +21,44 @@ const PHI_PATTERNS: { label: string; regex: RegExp }[] = [
     label: "medical record number",
     regex: /\b(mrn|health number|ramq|ohip|phn)\s*#?\s*:?\s*\w{6,}/i,
   },
+  {
+    label: "street address",
+    regex: /\b\d{1,5}\s+\w+(\s+\w+){0,2}\s+(street|st|avenue|ave|road|rd|drive|dr|boulevard|blvd)\b/i,
+  },
+  {
+    label: "Canadian postal code",
+    regex: /\b[A-Za-z]\d[A-Za-z][ -]?\d[A-Za-z]\d\b/,
+  },
+  {
+    label: "labeled patient identifier",
+    regex: /\b(patient id|chart number|hospital number)\s*#?\s*:?\s*\w{4,}/i,
+  },
 ];
+
+/** Blocks plausible real person names (e.g. "John Smith") — allows "58M", "Patient A" */
+const REAL_NAME_PATTERN =
+  /\b(?!Patient\s+[A-Z]\b)(?!Case\s+[A-Z0-9]+\b)([A-Z][a-z]{2,})\s+([A-Z][a-z]{2,})\b/;
+
+const ALLOWED_FICTIONAL_NAMES = new Set([
+  "trainee case",
+  "chest pain",
+  "arm heaviness",
+  "worst headache",
+  "rlq tenderness",
+  "neck stiffness",
+]);
 
 export function scanForPhi(text: string): string[] {
   const hits = new Set<string>();
   for (const { label, regex } of PHI_PATTERNS) {
     if (regex.test(text)) hits.add(label);
+  }
+  const nameMatch = text.match(REAL_NAME_PATTERN);
+  if (nameMatch) {
+    const phrase = nameMatch[0].toLowerCase();
+    if (!ALLOWED_FICTIONAL_NAMES.has(phrase)) {
+      hits.add("possible real person name (use Patient A or 58M instead)");
+    }
   }
   return [...hits];
 }
@@ -52,4 +84,4 @@ export function scanClinicalCaseForPhi(fields: {
 }
 
 export const PHI_BLOCK_MESSAGE =
-  "Possible patient identifying information detected. Training mode allows fictional or de-identified cases only. Remove names, health card numbers, phone numbers, emails, and MRNs.";
+  "Blocked for safety: possible identifying information detected. Use fictional cases only (e.g. Patient A, 58M with chest pain). Remove names, addresses, health numbers, phone, and email.";

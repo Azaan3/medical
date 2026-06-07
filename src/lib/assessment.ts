@@ -1,7 +1,7 @@
 import type { ClinicalAssessment } from "./types";
 
 const DEFAULT_DISCLAIMER =
-  "Clinical decision support only. The treating physician is solely responsible for diagnosis and treatment. Verify all suggestions against local guidelines and clinical judgment.";
+  "EDUCATIONAL SIMULATION ONLY — NOT MEDICAL ADVICE. Fictional cases for learning. Not Health Canada approved. Do not use for real patients. Output may be wrong.";
 
 export function parseAssessment(raw: string): ClinicalAssessment {
   const trimmed = raw.trim();

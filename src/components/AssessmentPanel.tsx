@@ -1,3 +1,4 @@
+import { OUTPUT_WATERMARK } from "@/lib/config";
 import type { ClinicalAssessment } from "@/lib/types";
 
 const likelihoodStyles = {
@@ -38,6 +39,12 @@ export function AssessmentPanel({ assessment, loading, sourcesUsed }: Props) {
 
   return (
     <div className="space-y-4">
+      <div
+        role="note"
+        className="rounded-lg border-2 border-dashed border-red-300 bg-red-50 px-4 py-2 text-center text-xs font-semibold uppercase tracking-wide text-red-800"
+      >
+        {OUTPUT_WATERMARK}
+      </div>
       <section className="clinical-panel p-5">
         <h2 className="text-lg font-semibold text-clinical-900">Summary</h2>
         <p className="mt-2 text-slate-700 leading-relaxed">{assessment.summary}</p>

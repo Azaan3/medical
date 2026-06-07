@@ -1,9 +1,21 @@
 import { NextResponse } from "next/server";
+import { ALLOW_CASE_FILE_UPLOAD } from "@/lib/config";
 import { extractDocumentText } from "@/lib/documents/extract";
+import { scanForPhi } from "@/lib/phi-guard";
 
 const MAX_BYTES = 8 * 1024 * 1024;
 
 export async function POST(request: Request) {
+  if (!ALLOW_CASE_FILE_UPLOAD) {
+    return NextResponse.json(
+      {
+        error:
+          "File uploads are disabled in educational mode (real reports often contain private information). Type fictional findings manually.",
+      },
+      { status: 403 },
+    );
+  }
+
   try {
     const formData = await request.formData();
     const file = formData.get("file");
@@ -24,6 +36,16 @@ export async function POST(request: Request) {
       file.name,
       file.type || "application/octet-stream",
     );
+
+    const phiHits = scanForPhi(text);
+    if (phiHits.length > 0) {
+      return NextResponse.json(
+        {
+          error: `File appears to contain identifying information (${phiHits.join(", ")}). Use fictional cases only.`,
+        },
+        { status: 400 },
+      );
+    }
 
     return NextResponse.json({
       name: file.name,

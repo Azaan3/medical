@@ -7,6 +7,7 @@ import {
   SYSTEM_PROMPT,
 } from "@/lib/prompts";
 import { APP_MODE } from "@/lib/config";
+import { CONSENT_BLOCK_MESSAGE, validateConsent } from "@/lib/consent";
 import { PHI_BLOCK_MESSAGE, scanClinicalCaseForPhi } from "@/lib/phi-guard";
 import { retrieveGuidelineContext } from "@/lib/rag/retrieve";
 import type { ChatMessage, ClinicalCase } from "@/lib/types";
@@ -46,6 +47,7 @@ const requestSchema = z.object({
     }),
   ),
   newInput: z.string().min(1),
+  consent: z.record(z.unknown()).optional(),
 });
 
 async function callOpenAI(
@@ -118,7 +120,18 @@ export async function POST(request: Request) {
       );
     }
 
-    const { clinicalCase, messages, newInput } = parsed.data;
+    const { clinicalCase, messages, newInput, consent } = parsed.data;
+
+    if (!validateConsent(consent)) {
+      return NextResponse.json(
+        {
+          error: CONSENT_BLOCK_MESSAGE,
+          assessment: fallbackAssessment(CONSENT_BLOCK_MESSAGE),
+        },
+        { status: 403 },
+      );
+    }
+
     const caseWithDocs = {
       ...clinicalCase,
       documentTexts: clinicalCase.documentTexts ?? [],

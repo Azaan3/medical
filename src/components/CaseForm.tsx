@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { ALLOW_CASE_FILE_UPLOAD } from "@/lib/config";
 import type { CaseDocument, ClinicalCase, LabResult } from "@/lib/types";
 
 interface Props {
@@ -234,6 +235,7 @@ export function CaseForm({ clinicalCase, onChange }: Props) {
         ))}
       </div>
 
+      {ALLOW_CASE_FILE_UPLOAD ? (
       <label className="flex flex-col gap-1 text-sm">
         Attach reports (PDF, images, text — extracted into case)
         <input
@@ -303,6 +305,13 @@ export function CaseForm({ clinicalCase, onChange }: Props) {
           </ul>
         )}
       </label>
+      ) : (
+        <p className="text-xs text-slate-600 rounded-lg bg-slate-50 border border-slate-200 p-3">
+          File uploads are turned off for safety (real hospital files often contain
+          private information). Type fictional labs and findings in the form or
+          chat instead.
+        </p>
+      )}
     </div>
   );
 }
