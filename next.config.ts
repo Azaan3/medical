@@ -6,6 +6,11 @@ const nextConfig: NextConfig = {
     serverActions: {
       bodySizeLimit: "10mb",
     },
+    outputFileTracingIncludes: {
+      "/api/assess": ["./data/**/*"],
+      "/api/knowledge/status": ["./data/**/*"],
+      "/api/knowledge/reindex": ["./data/**/*"],
+    },
   },
 };
 

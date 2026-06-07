@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "ingest": "tsx scripts/ingest-knowledge.ts",
-    "build": "npm run ingest && next build",
+    "build": "next build",
     "start": "next start",
     "lint": "next lint"
   },
@@ -15,6 +15,9 @@
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "zod": "^3.24.4"
+  },
+  "engines": {
+    "node": ">=20"
   },
   "devDependencies": {
     "@types/pdf-parse": "^1.1.4",
