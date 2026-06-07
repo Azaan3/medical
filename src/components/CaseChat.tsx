@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import { APP_MODE } from "@/lib/config";
+import { PHI_BLOCK_MESSAGE, scanClinicalCaseForPhi } from "@/lib/phi-guard";
 import type { ChatMessage, ClinicalAssessment, ClinicalCase } from "@/lib/types";
 
 interface Props {
@@ -40,6 +42,23 @@ export function CaseChat({
     setLoading(true);
     onLoadingChange?.(true);
     setError(null);
+
+    if (APP_MODE === "training") {
+      const phiHits = scanClinicalCaseForPhi({
+        chiefComplaint: clinicalCase.chiefComplaint,
+        symptoms: clinicalCase.symptoms,
+        history: clinicalCase.history,
+        narrative: clinicalCase.narrative,
+        documentTexts: clinicalCase.documentTexts,
+        newInput: text,
+      });
+      if (phiHits.length > 0) {
+        setError(`${PHI_BLOCK_MESSAGE} (${phiHits.join(", ")})`);
+        setLoading(false);
+        onLoadingChange?.(false);
+        return;
+      }
+    }
 
     const symptomLike = text
       .split(/[,;.]/)

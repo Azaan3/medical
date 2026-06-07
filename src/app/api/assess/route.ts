@@ -6,6 +6,8 @@ import {
   RESPONSE_SCHEMA,
   SYSTEM_PROMPT,
 } from "@/lib/prompts";
+import { APP_MODE } from "@/lib/config";
+import { PHI_BLOCK_MESSAGE, scanClinicalCaseForPhi } from "@/lib/phi-guard";
 import { retrieveGuidelineContext } from "@/lib/rag/retrieve";
 import type { ChatMessage, ClinicalCase } from "@/lib/types";
 
@@ -121,6 +123,27 @@ export async function POST(request: Request) {
       ...clinicalCase,
       documentTexts: clinicalCase.documentTexts ?? [],
     } as ClinicalCase;
+
+    if (APP_MODE === "training") {
+      const phiHits = scanClinicalCaseForPhi({
+        chiefComplaint: caseWithDocs.chiefComplaint,
+        symptoms: caseWithDocs.symptoms,
+        history: caseWithDocs.history,
+        narrative: caseWithDocs.narrative,
+        documentTexts: caseWithDocs.documentTexts,
+        newInput,
+      });
+      if (phiHits.length > 0) {
+        return NextResponse.json(
+          {
+            error: PHI_BLOCK_MESSAGE,
+            phiDetected: phiHits,
+            assessment: fallbackAssessment(PHI_BLOCK_MESSAGE),
+          },
+          { status: 400 },
+        );
+      }
+    }
 
     const { chunks, contextBlock } = await retrieveGuidelineContext(
       caseWithDocs,

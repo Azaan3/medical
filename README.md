@@ -1,6 +1,10 @@
-# Clinical Copilot
+# Clinical Copilot (Canada — training mode)
 
-Web-based **clinical decision support (CDS)** for licensed physicians. Doctors enter structured case data, free-text narrative, and files; they collaborate with AI in chat as new symptoms appear. The system returns **ranked differentials**, **red flags**, **suggested workup**, and **citations** — never a single definitive diagnosis.
+Web-based **medical training simulator** for Canada. Trainees enter **fictional or de-identified** cases, collaborate with AI as symptoms emerge, and receive **ranked differentials**, **red flags**, and **suggested workup** — never a definitive diagnosis.
+
+**Not for real patient care.** Not Health Canada–licensed. PHI is blocked in training mode.
+
+**New here?** Read **[GETTING_STARTED.md](./GETTING_STARTED.md)** — step-by-step for deploy, practice, and long-term path.
 
 ## For clinicians (no terminal)
 

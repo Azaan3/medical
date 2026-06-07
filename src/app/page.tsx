@@ -6,6 +6,8 @@ import { CaseChat } from "@/components/CaseChat";
 import { CaseForm } from "@/components/CaseForm";
 import { DisclaimerBanner } from "@/components/DisclaimerBanner";
 import { KnowledgeStatus } from "@/components/KnowledgeStatus";
+import { TrainingCasePicker } from "@/components/TrainingCasePicker";
+import { TrainingGate } from "@/components/TrainingGate";
 import { createEmptyCase } from "@/lib/case-store";
 import type { ClinicalAssessment, ClinicalCase } from "@/lib/types";
 
@@ -24,6 +26,7 @@ export default function Home() {
   }
 
   return (
+    <TrainingGate>
     <div className="min-h-screen flex flex-col">
       <DisclaimerBanner />
 
@@ -32,7 +35,7 @@ export default function Home() {
           <div>
             <h1 className="text-2xl font-bold text-clinical-900">Clinical Copilot</h1>
             <p className="text-sm text-slate-600">
-              Global physician decision support — iterative differentials & red flags
+              Canada · training simulator — fictional cases, differentials & red flags
             </p>
             <KnowledgeStatus />
           </div>
@@ -56,6 +59,13 @@ export default function Home() {
         </div>
 
         <div className="lg:col-span-8 space-y-6">
+          <TrainingCasePicker
+            onLoad={(c) => {
+              setClinicalCase(c);
+              setAssessment(null);
+              setSourcesUsed([]);
+            }}
+          />
           <CaseChat
             clinicalCase={clinicalCase}
             onSymptomsAppend={appendSymptoms}
@@ -74,9 +84,9 @@ export default function Home() {
       </main>
 
       <footer className="border-t border-slate-200 py-4 text-center text-xs text-slate-500">
-        Add your hospital PDFs to the <code className="text-slate-700">knowledge/</code> folder
-        in the repo, redeploy, or POST /api/knowledge/reindex after upload.
+        Training only · Health Canada clearance required before any real clinical use.
       </footer>
     </div>
+    </TrainingGate>
   );
 }

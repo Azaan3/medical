@@ -4,7 +4,7 @@ export function createEmptyCase(): ClinicalCase {
   return {
     id: crypto.randomUUID(),
     createdAt: new Date().toISOString(),
-    demographics: {},
+    demographics: { region: "Canada" },
     chiefComplaint: "",
     symptoms: [],
     history: "",

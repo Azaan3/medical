@@ -44,7 +44,11 @@ export function CaseForm({ clinicalCase, onChange }: Props) {
 
   return (
     <div className="clinical-panel p-5 space-y-5 max-h-[calc(100vh-12rem)] overflow-y-auto">
-      <h2 className="text-lg font-semibold text-clinical-900">Case data</h2>
+      <h2 className="text-lg font-semibold text-clinical-900">Training case</h2>
+      <p className="text-xs text-slate-600 -mt-3">
+        Use fictional patients only (e.g. &quot;58M with chest pain&quot;). No real
+        names or health card numbers.
+      </p>
 
       <fieldset className="grid grid-cols-2 gap-3 text-sm">
         <label className="flex flex-col gap-1">
