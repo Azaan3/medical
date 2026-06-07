@@ -6,6 +6,8 @@ Web-based **medical training simulator** for Canada. Trainees enter **fictional 
 
 **New here?** Read **[GETTING_STARTED.md](./GETTING_STARTED.md)** — step-by-step for deploy, practice, and long-term path.
 
+<!-- deploy trigger -->
+
 ## For clinicians (no terminal)
 
 Once deployed, open the URL in any browser. No command line.
